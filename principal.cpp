@@ -6,22 +6,46 @@ Principal::Principal(QWidget *parent)
     , ui(new Ui::Principal)
 {
     ui->setupUi(this);
-//    QString nuevo = "registroIMC.txt";
-//    QString dirHome = QDir::home().absolutePath();
-//    QString nombreArchivo = dirHome + "/" + nuevo;
-//    QFile archivo(nombreArchivo);
-//    if(archivo.open(QFile::ReadOnly)){
-//        // Crear un 'stream' de texto
-//        QTextStream entrada(&archivo);
-//        QString linea = entrada.readLine();
-//        linea = entrada.readLine();
-//        int pos = linea.indexOf('$')+1;
-//    }else {
-//        QMessageBox::warning(this,
-//                             "Abrir datos",
-//                             "No se pudo abrir el archivo");
-//    }
-//    archivo.close();
+    QString nuevo = "registroIMC.txt";
+    QString dirHome = QDir::home().absolutePath();
+    QString nombreArchivo = dirHome + "/" + nuevo;
+    QFile archivo(nombreArchivo);
+    if(archivo.open(QFile::ReadOnly)){
+        QTextStream entrada(&archivo);
+        float mayor = 0, menor = 0;
+        do{
+            QString linea = entrada.readLine();
+            int pos1 = linea.indexOf('o')+2;
+            int pos2 = linea.indexOf('k')-1;
+            QString strP = linea.mid(pos1, pos2-pos1);
+            m_usuario->setPesoAct(strP.toFloat());
+            ui->inPeso->setValue(strP.toFloat());
+            if (mayor == 0 && menor == 0){
+                mayor = strP.toFloat();
+                menor = strP.toFloat();
+                m_usuario->setPesoMax(strP.toFloat());
+                m_usuario->setPesoMin(strP.toFloat());
+            }else if (mayor < strP.toFloat()){
+                mayor = strP.toFloat();
+            }else if (menor > strP.toFloat()){
+                menor = strP.toFloat();
+            }
+            pos1 = linea.indexOf('a')+2;
+            pos2 = linea.indexOf('c')-1;
+            QString strA = linea.mid(pos1, pos2-pos1);
+            m_usuario->setAltura(strA.toFloat());
+            ui->inAltura->setValue(strA.toFloat());
+        }while(!entrada.atEnd());
+        m_usuario->setPesoMax(mayor);
+        ui->outPmax->setText(QString::number(mayor, 'f', 2));
+        m_usuario->setPesoMin(menor);
+        ui->outPmin->setText(QString::number(menor, 'f', 2));
+    }else {
+        QMessageBox::warning(this,
+                             "Abrir datos",
+                             "No se pudo abrir el archivo");
+    }
+    archivo.close();
 }
 
 Principal::~Principal()
@@ -38,11 +62,11 @@ void Principal::guardar()
     if(archivo.open(QFile::WriteOnly | QIODevice::Append)){
         QTextStream salida(&archivo);
         salida << m_fecha.day() << "/" << m_fecha.month() << "/" << m_fecha.year();
-        salida << " Peso: " << QString::number(m_usuario->pesoAct(), 'f', 2) << " kg";
-        salida << " Altura: " << QString::number(m_usuario->altura(), 'f', 2) << " cm";
+        salida << " Peso " << QString::number(m_usuario->pesoAct(), 'f', 2) << " kg";
+        salida << " Altura " << QString::number(m_usuario->altura(), 'f', 2) << " cm";
         salida << "\n";
         ui->statusbar->showMessage("Calculando...", 5000);
-    }else {
+    }else{
         QMessageBox::warning(this,
                              "Guardar datos",
                              "No se pudo guardar el archivo");
@@ -52,7 +76,6 @@ void Principal::guardar()
 
 void Principal::limpiar()
 {
-    ui->inFecha->clear();
     ui->inPeso->setValue(0);
     ui->inAltura->setValue(0);
 }
