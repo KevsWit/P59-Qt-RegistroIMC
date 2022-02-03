@@ -5,9 +5,11 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFile>
+#include <QFileInfoList>
 #include <QDir>
 #include <QDebug>
 #include <QDate>
+#include <QTextStream>
 
 #include "usuario.h"
 
@@ -30,5 +32,7 @@ private:
     Ui::Principal *ui;
     QDate m_fecha;
     Usuario *m_usuario;
+    void guardar();
+    void limpiar();
 };
 #endif // PRINCIPAL_H
