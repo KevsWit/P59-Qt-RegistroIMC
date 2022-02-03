@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Principal</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="recursos.qrc">
+    <normaloff>:/new/prefix1/recursos/libra-1714232_1280.png</normaloff>:/new/prefix1/recursos/libra-1714232_1280.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -47,7 +51,6 @@ background-color: rgb(185, 0, 93);</string>
         <widget class="QLabel" name="label">
          <property name="font">
           <font>
-           <family>MS Reference Sans Serif</family>
            <pointsize>11</pointsize>
           </font>
          </property>
@@ -63,7 +66,6 @@ background-color: rgb(185, 0, 93);</string>
         <widget class="QLabel" name="label_2">
          <property name="font">
           <font>
-           <family>MS Reference Sans Serif</family>
            <pointsize>11</pointsize>
           </font>
          </property>
@@ -79,7 +81,6 @@ background-color: rgb(185, 0, 93);</string>
         <widget class="QLabel" name="label_3">
          <property name="font">
           <font>
-           <family>MS Reference Sans Serif</family>
            <pointsize>11</pointsize>
           </font>
          </property>
@@ -95,7 +96,6 @@ background-color: rgb(185, 0, 93);</string>
         <widget class="QLabel" name="label_4">
          <property name="font">
           <font>
-           <family>MS Reference Sans Serif</family>
            <pointsize>11</pointsize>
           </font>
          </property>
@@ -482,6 +482,8 @@ background-color: rgb(85, 170, 255);</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>
